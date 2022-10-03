@@ -1,8 +1,9 @@
 var form=document.getElementById('addForm');
 var itemList =document.getElementById('items');
 
-//form submit
+itemList.addEventListener('click',removeItem);
 
+//form submit
 form.addEventListener('submit', addItem);
 
 function addItem(e){
@@ -23,4 +24,16 @@ function addItem(e){
      deleteBtn.appendChild(document.createTextNode('x'));
      li.appendChild(deleteBtn);
      itemList.appendChild(li);
+}
+
+function removeItem(e){
+    if(e.target.classList.contains('delete'))
+    {
+        if(confirm('are u sure?')){
+            var li=e.target.parentElement;
+            itemList.removeChild(li);
+            itemList.isContentEditable();
+        }
+    }
+
 }
