@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>storing user details</title>
+    
+  </head>
+  <body>
+    <form onsubmit="save(event)">
+       <label>Name :</label>
+      <input type="text" id="name"  name="username" required ><br><br>
+      <label>Email :</label>
+      <input type="email" id="email" name="emailId"  required><br><br>
+      <label>Phone :</label>
+      <input type="tel" id="phone" name="phonenumber" ><br><br>
+      <button>submit</button>
+    </form>
+    <ul id='listofbooking'></ul>
+      
+    <script>
+        function save(event){
+          event.preventDefault();
+          const name=event.target.username.value;
+          const email=event.target.emailId.value;
+          const phonenumber=event.target.phonenumber.value;
+          
+         
+          const obj = {
+            name,
+            email,
+            phonenumber
+          }
+
+          localStorage.setItem(obj.email,JSON.stringify(obj));
+          addnewline(obj);
+        }
+          
+        function addnewline(user){
+          const ul=document.getElementById('listofbooking');
+          const li=`<li> ${user.name} -- ${user.email}  </li>`;
+          ul.innerHTML=ul.innerHTML+li;
+
+        }
+
+                
+
+    
+      </script>
+  
+  </body>
+</html>
