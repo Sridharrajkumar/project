@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+        <head>
+            <title>booking webpage</title>
+        </head>
+        <body>
+            <form onsubmit="save(event)">
+                <label>Name :</label>
+                <input type="text" name="username"  required/><br><br>
+                <label>Email :</label>
+                <input type="email" name="email"  required/><br><br>
+                <label>phone :</label>
+                <input typr="tel" name="phonenumber" /><br><br>
+                <button>submit</button>
+            </form>
+            <ul id="listofbooking" ></ul>
+            <script>
+                function save(event){
+                    event.preventDefault();
+                    const name = event.target.username.value;
+                    const email=event.target.email.value;
+                    const phonenumber=event.target.phonenumber.value;
+                    const obj = {
+                        name,
+                        email,
+                        phonenumber
+
+                    }
+                    localStorage.setItem(obj.email , JSON.stringify(obj));
+                    onscreen(obj)
+                }
+
+                window.addEventListener("DOMContentLoaded", () => {
+                const localstoragekeys  = Object.keys(localStorage);
+
+                for(var i =0; i< localstoragekeys.length; i++){
+                    const key = localstoragekeys[i]
+                    const userDetailsString = localStorage[key];
+                    const userDetailsObj = JSON.parse(userDetailsString);
+                    onscreen(userDetailsObj)
+                }
+            })
+
+            function onscreen(user)
+            {
+                if(localStorage.getItem(user.email))
+                {
+                    removeuser(user.email)
+                }
+                const ul=document.getElementById('listofbooking');
+                const li=`<li id=${user.email}> ${user.name} - ${user.email} <button onclick=removefromscreen('${user.email}')>edit</button> <button onclick=deleteuser('${user.email}')> del </button> </li>`
+                ul.innerHTML=ul.innerHTML+li;
+            }
+            function deleteuser(email){
+                localStorage.removeItem(email);
+                removefromscreen(email)
+            }
+            function removefromscreen(email)
+            {
+                const ul=document.getElementById('listofbooking');
+                const li=document.getElementById(email);
+                ul.removeChild(li);
+            }
+            function removeuser(email)
+            {
+                const ul=document.getElementById('listofbooking');
+                const li=document.getElementById(email);
+                if(li)
+                {
+                    ul.removeChild(li);
+                }
+
+            }
+
+           
+
+
+
+            </script>
+        </body>
+</html>
