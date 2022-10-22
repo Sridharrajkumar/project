@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>expenses page</title>
+    </head>
+    <body>
+        <h1>expenses </h1>
+        <form onsubmit="details(event)">
+            <label>choose expense:</label>
+            <input type="number" name="amounts" /><br><br>
+            <label>choose description:</label>
+            <input type="text"  name="descriptions"  /><br><br>
+            <label>choose category: </label>
+            <select name="categorys" id="categorys"  >
+                <option value="movie">movie</option>
+                <option value="travel">travel</option>
+                <option value="grocery">grocery</option>
+                <option value="eb bill">eb bill</option>
+            </select><br><br>
+            <button>submit</button>
+
+        </form>
+        <ul id="expensesdetails"></ul>
+    </body>
+        <script>
+            function details(event){
+                event.preventDefault();
+                    const money=event.target.amounts.value;
+                    const des=event.target.descriptions.value;
+                    const category=event.target.categorys.value;
+                    const obj={
+                        money,
+                        des,
+                        category
+                    }
+                localStorage.setItem(obj.des,JSON.stringify(obj));
+                 onscreen(obj);
+
+            }
+
+            window.addEventListener("DOMContentLoaded", () =>{
+                const localstoragekeys= Object.keys(localStorage);
+                for(var i=0;i<localstoragekeys.length;i++)
+                {
+                    const key = localstoragekeys[i]
+                    const userDetailsString = localStorage[key];
+                    const userDetailsObj = JSON.parse(userDetailsString);
+                    onscreen(userDetailsObj);
+                }
+            })
+
+
+            function onscreen(expense){
+                const ul=document.getElementById("expensesdetails");
+                const li=`<li>  ${expense.money}_${expense.des}_${expense.category} <button onclick=deleteexpenses(${expense.des})>delete expenses</button> <button onclick=editexpenses(${expense.money},${expense.des},${expense.category})>edit expenses</button> </li> `;
+                ul.innerHTML=ul.innerHTML+li ;
+
+            }
+
+            function deleteexpenses(para){
+                localStorage.removeItem(para);
+                deletefromscreen(para)
+            }
+            function deletefromscreen(para2){
+                const ul=document.getElementById("expensesdetails");
+                const li=document.getElementById(para2);
+                ul.removeChild(li);
+            }
+            function editexpenses(money,des,category){
+               document.getElementsByName("amounts").value=money;
+               document.getElementsByName("descriptions").value=des;
+               document.getElementsByName("categorys").value=category;
+               deleteexpenses(des);
+            }
+
+        </script>
+    
+</html>
